@@ -1,6 +1,6 @@
 import express from 'express';
 import http from 'http';
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import { v4 } from 'uuid';
 
 const app = express();
@@ -15,6 +15,12 @@ app.get('/', (req, res) => {
 
 app.get('/:room', (req, res) => {
   res.render('room', { roomId: req.params.room });
+});
+
+io.on('connection', (socket: Socket) => {
+  socket.on('join-room', (roomId, userId) => {
+    console.log(roomId, userId);
+  });
 });
 
 app.listen(3000, () => {
